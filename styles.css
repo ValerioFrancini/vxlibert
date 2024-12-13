@@ -2,9 +2,9 @@ body, html {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
+    background: url('background.jpg') no-repeat center center fixed;
     background-size: cover;
     color: #fff;
-    background: url('background.jpg') no-repeat center center fixed;
   }
   
   .container {
@@ -25,13 +25,12 @@ body, html {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
   }
   
   .icon-grid {
-    position: relative;
     width: 400px;
     height: 400px;
+    position: relative;
   }
   
   .app-icon {
@@ -40,7 +39,7 @@ body, html {
     height: 100px;
     text-align: center;
     cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    transition: transform 0.2s, box-shadow 0.2s;
   }
   
   .app-icon:hover {
@@ -63,6 +62,7 @@ body, html {
   .icon-circle img {
     width: 50%;
     height: 50%;
+    border: 1px solid transparent; /* Aggiungi un bordo per debug se necessario */
   }
   
   .footer {
@@ -71,27 +71,3 @@ body, html {
     background: rgba(0, 0, 0, 0.6);
   }
   
-  /* Responsive Design */
-  @media (max-width: 768px) {
-    .icon-grid {
-      width: 300px;
-      height: 300px;
-    }
-  
-    .app-icon {
-      width: 80px;
-      height: 80px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .icon-grid {
-      width: 200px;
-      height: 200px;
-    }
-  
-    .app-icon {
-      width: 60px;
-      height: 60px;
-    }
-  }
