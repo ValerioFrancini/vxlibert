@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
   
   // Rende la funzione di navigazione globale
-  window.navigateTo = navigateTo;
+  window.navigator = navigateTo;
 
   // Organizza le icone in cerchio
   function arrangeIcons() {
