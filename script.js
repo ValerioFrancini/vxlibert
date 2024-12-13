@@ -19,16 +19,109 @@ function navigateTo(app) {
   
   function arrangeIcons() {
     const icons = document.querySelectorAll('.app-icon');
-    const radius = 150;
+    const radius = 100; // Ridotto per rendere il layout più compatto
     const angleStep = (2 * Math.PI) / icons.length;
-  
+
     icons.forEach((icon, index) => {
-      const angle = index * angleStep;
-      const x = radius * Math.cos(angle);
-      const y = radius * Math.sin(angle);
-      icon.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+        const angle = index * angleStep;
+        const x = radius * Math.cos(angle); // Posizione x
+        const y = radius * Math.sin(angle); // Posizione y
+        icon.style.left = `calc(50% + ${x}px)`; // Centra rispetto al container
+        icon.style.top = `calc(50% + ${y}px)`; // Centra rispetto al container
+        icon.style.transform = `translate(-50%, -50%)`; // Rimuove lo spostamento aggiuntivo
     });
+}
+
+document.addEventListener('DOMContentLoaded', arrangeIcons);
+
+
+// Password predefinita
+const PASSWORD = "try1";
+
+function checkPassword() {
+  const enteredPassword = document.getElementById("password").value;
+  const errorMessage = document.getElementById("error-message");
+  
+  if (enteredPassword === PASSWORD) {
+    // Nasconde la schermata di login e mostra il contenuto principale
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+  } else {
+    // Mostra un messaggio di errore
+    errorMessage.textContent = "Password errata. Riprova.";
   }
+}
+
+
+
+
+// Importa Firestore dal file firebase.js
+import { db } from './firebase.js';
+import { doc, getDoc, setDoc } from "firebase/firestore"; // Moduli per leggere/scrivere
+
+// Password predefinita
+const PASSWORD = "miasuperpassword";
+
+// Funzione per controllare la password
+function checkPassword() {
+  const enteredPassword = document.getElementById("password").value;
+  const errorMessage = document.getElementById("error-message");
+
+  if (enteredPassword === PASSWORD) {
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+
+    // Carica i dati dal database
+    loadDataFromFirestore();
+  } else {
+    errorMessage.textContent = "Password errata. Riprova.";
+  }
+}
+
+// Funzione per caricare i dati da Firestore
+async function loadDataFromFirestore() {
+  const docRef = doc(db, "user_data", "notes");
   
-  document.addEventListener('DOMContentLoaded', arrangeIcons);
-  
+  try {
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      const data = docSnap.data();
+      populateUI(data);
+    } else {
+      console.log("Nessun dato trovato!");
+    }
+  } catch (error) {
+    console.error("Errore nel caricamento dei dati:", error);
+  }
+}
+
+// Funzione per salvare i dati su Firestore
+async function saveDataToFirestore(data) {
+  const docRef = doc(db, "user_data", "notes");
+
+  try {
+    await setDoc(docRef, data);
+    console.log("Dati salvati con successo!");
+  } catch (error) {
+    console.error("Errore nel salvataggio dei dati:", error);
+  }
+}
+
+// Funzione di esempio per salvare una nota
+function saveNote() {
+  const note = document.getElementById("note-input").value;
+
+  const data = {
+    note: note,
+    timestamp: new Date().toISOString()
+  };
+
+  saveDataToFirestore(data);
+}
+
+// Funzione per aggiornare l'interfaccia utente
+function populateUI(data) {
+  document.getElementById("note-display").textContent = data.note || "Nessuna nota";
+}
+
+
