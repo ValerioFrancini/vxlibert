@@ -1,5 +1,5 @@
 // Importa i moduli Firestore necessari
-import { collection, doc, getDocs, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+import { collection, doc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { db } from './firebase.js'; // Assicurati che il percorso sia corretto
 
 // Funzione per salvare una nuova nota
@@ -40,7 +40,8 @@ async function loadNotes() {
     const querySnapshot = await getDocs(collection(db, "user_data", "notes", "all_notes"));
     querySnapshot.forEach((doc) => {
       const noteData = doc.data();
-      const card = createNoteCard(noteData.note, noteData.timestamp);
+      const noteId = doc.id;
+      const card = createNoteCard(noteId, noteData.note, noteData.timestamp);
       notesContainer.appendChild(card);
     });
     console.log("Archivio note caricato!");
@@ -50,7 +51,7 @@ async function loadNotes() {
 }
 
 // Funzione per creare una card per una nota
-function createNoteCard(note, timestamp) {
+function createNoteCard(noteId, note, timestamp) {
   const card = document.createElement("div");
   card.classList.add("note-card");
 
@@ -61,10 +62,32 @@ function createNoteCard(note, timestamp) {
   noteDate.textContent = `Salvata il ${new Date(timestamp).toLocaleString()}`;
   noteDate.classList.add("note-date");
 
+  const deleteButton = document.createElement("button");
+  deleteButton.textContent = "Elimina";
+  deleteButton.classList.add("delete-button");
+  deleteButton.onclick = () => confirmDelete(noteId);
+
   card.appendChild(noteText);
   card.appendChild(noteDate);
+  card.appendChild(deleteButton);
 
   return card;
+}
+
+// Funzione per eliminare una nota con conferma
+async function confirmDelete(noteId) {
+  const confirmed = confirm("Sei sicuro di voler eliminare questa nota?");
+  if (!confirmed) return;
+
+  try {
+    const docRef = doc(collection(db, "user_data", "notes", "all_notes"), noteId);
+    await deleteDoc(docRef);
+    console.log("Nota eliminata con successo!");
+    alert("Nota eliminata!");
+    loadNotes(); // Aggiorna l'elenco delle note
+  } catch (error) {
+    console.error("Errore nell'eliminazione della nota:", error);
+  }
 }
 
 // Carica le note quando la pagina è pronta
