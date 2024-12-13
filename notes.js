@@ -33,21 +33,38 @@ async function saveNote() {
 
 // Funzione per caricare tutte le note dall'archivio
 async function loadNotes() {
-  const notesList = document.getElementById("notes-list");
-  notesList.innerHTML = ""; // Pulisce l'archivio prima di caricare
+  const notesContainer = document.getElementById("notes-container");
+  notesContainer.innerHTML = ""; // Pulisce l'archivio prima di caricare
 
   try {
     const querySnapshot = await getDocs(collection(db, "user_data", "notes", "all_notes"));
     querySnapshot.forEach((doc) => {
       const noteData = doc.data();
-      const listItem = document.createElement("li");
-      listItem.textContent = `${noteData.note} (salvata il ${new Date(noteData.timestamp).toLocaleString()})`;
-      notesList.appendChild(listItem);
+      const card = createNoteCard(noteData.note, noteData.timestamp);
+      notesContainer.appendChild(card);
     });
     console.log("Archivio note caricato!");
   } catch (error) {
     console.error("Errore nel caricamento dell'archivio note:", error);
   }
+}
+
+// Funzione per creare una card per una nota
+function createNoteCard(note, timestamp) {
+  const card = document.createElement("div");
+  card.classList.add("note-card");
+
+  const noteText = document.createElement("p");
+  noteText.textContent = note;
+
+  const noteDate = document.createElement("span");
+  noteDate.textContent = `Salvata il ${new Date(timestamp).toLocaleString()}`;
+  noteDate.classList.add("note-date");
+
+  card.appendChild(noteText);
+  card.appendChild(noteDate);
+
+  return card;
 }
 
 // Carica le note quando la pagina è pronta
