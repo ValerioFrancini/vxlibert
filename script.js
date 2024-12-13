@@ -24,6 +24,9 @@ function checkPassword() {
   }
 }
 
+// Rendi `checkPassword` disponibile globalmente
+window.checkPassword = checkPassword;
+
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
   switch (app) {
