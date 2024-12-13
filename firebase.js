@@ -16,8 +16,13 @@ const firebaseConfig = {
 
 // Inizializza Firebase
 const app = initializeApp(firebaseConfig);
+
+// Inizializza Firestore e Auth
 const db = getFirestore(app);
 const auth = getAuth(app);
+
+// Esporta `db` e `auth` per usarli in altri file
+export { db, auth };
 
 // Listener per il menu del profilo
 const profileButton = document.getElementById("profile-button");

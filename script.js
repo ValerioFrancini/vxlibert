@@ -18,9 +18,10 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'mood.html';
         break;
       default:
-        console.error('Invalid app name!');
+        console.error(`Navigazione non valida: ${app}`);
     }
   }
+  
   window.navigateTo = navigateTo;
 
   // Organizza le icone
@@ -46,21 +47,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
   if (profileButton && profileMenu) {
     profileButton.addEventListener("click", (event) => {
-      event.stopPropagation(); // Evita conflitti con altri eventi
+      event.stopPropagation();
       profileMenu.style.display = profileMenu.style.display === "none" ? "block" : "none";
     });
 
-    // Nascondi il menu cliccando fuori
     document.addEventListener("click", (event) => {
       if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
         profileMenu.style.display = "none";
       }
     });
   } else {
-    console.error("Profile menu or button not found.");
+    console.warn("Profilo o menu profilo non trovato!");
   }
 
-  // Aggiunta degli event listener per i pulsanti delle app
+  // Aggiungi listener per i pulsanti delle app
   const appIcons = document.querySelectorAll('.app-icon');
   appIcons.forEach((icon) => {
     icon.addEventListener('click', () => {
@@ -68,4 +68,12 @@ document.addEventListener('DOMContentLoaded', () => {
       navigateTo(app);
     });
   });
+
+  // Verifica Firebase
+  if (!db) {
+    console.error("Firebase non è stato inizializzato correttamente.");
+    return;
+  }
+
+  console.log("Script caricato correttamente.");
 });
