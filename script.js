@@ -1,4 +1,3 @@
-// Function to handle navigation to different apps
 function navigateTo(app) {
     switch (app) {
       case 'calendar':
@@ -17,4 +16,19 @@ function navigateTo(app) {
         console.error('Invalid app name!');
     }
   }
+  
+  function arrangeIcons() {
+    const icons = document.querySelectorAll('.app-icon');
+    const radius = 150;
+    const angleStep = (2 * Math.PI) / icons.length;
+  
+    icons.forEach((icon, index) => {
+      const angle = index * angleStep;
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+      icon.style.transform = `translate(-50%, -50%) translate(${x}px, ${y}px)`;
+    });
+  }
+  
+  document.addEventListener('DOMContentLoaded', arrangeIcons);
   
