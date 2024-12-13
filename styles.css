@@ -50,6 +50,7 @@ body, html {
 .app-icon {
   text-align: center;
   cursor: pointer;
+  pointer-events: auto; 
 }
 
 .icon-circle {

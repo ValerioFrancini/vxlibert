@@ -11,7 +11,7 @@
   <div id="login-screen" class="login-screen">
     <div class="login-box">
       <h2>Accedi</h2>
-      <form id="login-form" onsubmit="return false;"> <!-- Form di login -->
+      <form id="login-form" onsubmit="return false;">
         <input type="email" id="login-email" placeholder="Inserisci la tua email" required>
         <input type="password" id="login-password" placeholder="Inserisci la password" required>
         <button id="login-button" type="submit">Accedi</button>
@@ -23,7 +23,7 @@
     <!-- Schermata di registrazione -->
     <div class="register-box" style="display: none;">
       <h2>Registrati</h2>
-      <form id="register-form" onsubmit="return false;"> <!-- Form di registrazione -->
+      <form id="register-form" onsubmit="return false;">
         <input type="email" id="register-email" placeholder="Inserisci la tua email" required>
         <input type="password" id="register-password" placeholder="Inserisci la password" required>
         <button id="register-button" type="submit">Registrati</button>
@@ -39,7 +39,7 @@
       <h1>Vxlibertà</h1>
       <!-- Pulsante Profilo -->
       <div class="profile-container">
-        <img src="icons/profile.svg" alt="Profile Icon" class="profile-icon" id="profile-button">
+        <img src="icons/profile.svg" alt="Icona profilo" class="profile-icon" id="profile-button">
         <div id="profile-menu" class="profile-menu" style="display: none;">
           <button id="logout-button">Logout</button>
         </div>
@@ -49,7 +49,7 @@
       <div class="icon-grid" id="icon-grid">
         <div class="app-icon" id="calendar-icon" onclick="navigateTo('calendar')">
           <div class="icon-circle">
-            <img src="icons/calendar.svg" alt="Calendar">
+            <img src="icons/calendar.svg" alt="Calendario">
           </div>
           <p>Calendario</p>
         </div>
@@ -61,7 +61,7 @@
         </div>
         <div class="app-icon" id="notes-icon" onclick="navigateTo('notes')">
           <div class="icon-circle">
-            <img src="icons/notes.svg" alt="Notes">
+            <img src="icons/notes.svg" alt="Note">
           </div>
           <p>Note</p>
         </div>
@@ -90,7 +90,6 @@
       onAuthStateChanged
     } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
 
-    // Configurazione Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
       authDomain: "vxlibert.firebaseapp.com",
