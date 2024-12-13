@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Le tue Note</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1>Le tue Note</h1>
+    </header>
+    <main class="main">
+      <!-- Sezione per scrivere una nuova nota -->
+      <div class="notes-section">
+        <h2>Scrivi una nuova nota</h2>
+        <textarea id="note-input" placeholder="Scrivi una nota..."></textarea>
+        <button onclick="saveNote()">Salva Nota</button>
+      </div>
+
+      <!-- Archivio delle note -->
+      <div class="notes-archive">
+        <h2>Archivio Note</h2>
+        <ul id="notes-list">
+          <!-- Le note verranno aggiunte dinamicamente qui -->
+        </ul>
+      </div>
+    </main>
+    <footer class="footer">
+      <p>&copy; 2024 Vxlibertà</p>
+    </footer>
+  </div>
+
+  <!-- Importa il file script -->
+  <script type="module" src="notes.js"></script>
+</body>
+</html>
