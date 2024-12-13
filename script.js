@@ -30,23 +30,27 @@ window.checkPassword = checkPassword;
 
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
-  switch (app) {
-    case 'calendar':
-      window.location.href = 'calendar.html';
-      break;
-    case 'todo':
-      window.location.href = 'todo.html';
-      break;
-    case 'notes':
-      window.location.href = 'notes.html';
-      break;
-    case 'mood':
-      window.location.href = 'mood.html';
-      break;
-    default:
-      console.error('Invalid app name!');
+    switch (app) {
+      case 'calendar':
+        window.location.href = 'calendar.html';
+        break;
+      case 'todo':
+        window.location.href = 'todo.html';
+        break;
+      case 'notes':
+        window.location.href = 'notes.html';
+        break;
+      case 'mood':
+        window.location.href = 'mood.html';
+        break;
+      default:
+        console.error('Invalid app name!');
+    }
   }
-}
+  
+  // Rendi `navigateTo` globale
+  window.navigateTo = navigateTo;
+  
 
 // Funzione per organizzare le icone in una disposizione circolare
 function arrangeIcons() {
