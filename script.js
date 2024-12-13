@@ -1,122 +1,56 @@
-// Importa i moduli Firestore necessari
 import { collection, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-import { db } from './firebase.js'; // Assicurati che il percorso sia corretto
+import { db } from './firebase.js';
 
-// Variabile globale per la password
-const PASSWORD = "try1";
-
-// Funzione per controllare la password
-function checkPassword() {
-  const enteredPassword = document.getElementById("password").value;
-  const errorMessage = document.getElementById("error-message");
-
-  console.log("Password inserita:", enteredPassword);
-
-  if (enteredPassword === PASSWORD) {
-    console.log("Password corretta!");
-    document.getElementById("login-screen").style.display = "none";
-    document.getElementById("main-content").style.display = "block";
-
-    // Carica i dati dal database
-    loadDataFromFirestore();
-  } else {
-    console.log("Password errata!");
-    errorMessage.textContent = "Password errata. Riprova.";
+// Funzione per navigare tra le app
+function navigateTo(app) {
+  switch (app) {
+    case 'calendar':
+      window.location.href = 'calendar.html';
+      break;
+    case 'todo':
+      window.location.href = 'todo.html';
+      break;
+    case 'notes':
+      window.location.href = 'notes.html';
+      break;
+    case 'mood':
+      window.location.href = 'mood.html';
+      break;
+    default:
+      console.error('Invalid app name!');
   }
 }
+window.navigateTo = navigateTo;
 
-// Rendi `checkPassword` disponibile globalmente
-window.checkPassword = checkPassword;
-
-// Funzione per gestire il navigatore delle applicazioni
-function navigateTo(app) {
-    switch (app) {
-      case 'calendar':
-        window.location.href = 'calendar.html';
-        break;
-      case 'todo':
-        window.location.href = 'todo.html';
-        break;
-      case 'notes':
-        window.location.href = 'notes.html';
-        break;
-      case 'mood':
-        window.location.href = 'mood.html';
-        break;
-      default:
-        console.error('Invalid app name!');
-    }
-  }
-  
-  // Rendi `navigateTo` globale
-  window.navigateTo = navigateTo;
-  
-
-// Funzione per organizzare le icone in una disposizione circolare
+// Organizza le icone
 function arrangeIcons() {
   const icons = document.querySelectorAll('.app-icon');
-  const radius = 100; // Ridotto per rendere il layout più compatto
+  const radius = 100;
   const angleStep = (2 * Math.PI) / icons.length;
 
   icons.forEach((icon, index) => {
     const angle = index * angleStep;
-    const x = radius * Math.cos(angle); // Posizione x
-    const y = radius * Math.sin(angle); // Posizione y
-    icon.style.left = `calc(50% + ${x}px)`; // Centra rispetto al container
-    icon.style.top = `calc(50% + ${y}px)`; // Centra rispetto al container
-    icon.style.transform = `translate(-50%, -50%)`; // Rimuove lo spostamento aggiuntivo
+    const x = radius * Math.cos(angle);
+    const y = radius * Math.sin(angle);
+    icon.style.left = `calc(50% + ${x}px)`;
+    icon.style.top = `calc(50% + ${y}px)`;
+    icon.style.transform = `translate(-50%, -50%)`;
   });
 }
-
 document.addEventListener('DOMContentLoaded', arrangeIcons);
 
-// Funzione per caricare i dati da Firestore
-async function loadDataFromFirestore() {
-  const docRef = doc(collection(db, "user_data"), "notes"); // Corretto per il nuovo SDK Firestore
+// Gestione del menu profilo
+const profileButton = document.getElementById("profile-button");
+const profileMenu = document.getElementById("profile-menu");
 
-  try {
-    console.log("Caricamento dati da Firestore...");
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      console.log("Dati caricati:", data);
-      populateUI(data);
-    } else {
-      console.log("Nessun dato trovato!");
+if (profileButton) {
+  profileButton.addEventListener("click", () => {
+    profileMenu.style.display = profileMenu.style.display === "none" ? "block" : "none";
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target !== profileButton && event.target !== profileMenu) {
+      profileMenu.style.display = "none";
     }
-  } catch (error) {
-    console.error("Errore nel caricamento dei dati da Firestore:", error);
-  }
-}
-
-// Funzione per salvare i dati su Firestore
-async function saveDataToFirestore(data) {
-  const docRef = doc(collection(db, "user_data"), "notes"); // Corretto per il nuovo SDK Firestore
-
-  try {
-    await setDoc(docRef, data);
-    console.log("Dati salvati con successo!");
-  } catch (error) {
-    console.error("Errore nel salvataggio dei dati:", error);
-  }
-}
-
-// Funzione per salvare una nuova nota
-function saveNote() {
-  const note = document.getElementById("note-input").value;
-
-  const data = {
-    note: note,
-    timestamp: new Date().toISOString()
-  };
-
-  saveDataToFirestore(data);
-}
-
-// Rendi `saveNote` globale
-window.saveNote = saveNote;
-
-// Funzione per aggiornare l'interfaccia utente
-function populateUI(data) {
-  document.getElementById("note-display").textContent = data.note || "Nessuna nota";
+  });
 }
