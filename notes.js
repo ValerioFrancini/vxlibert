@@ -2,6 +2,8 @@
 import { collection, doc, getDocs, setDoc, deleteDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { db } from './firebase.js'; // Assicurati che il percorso sia corretto
 
+let noteIdToDelete = null; // Variabile per salvare l'ID della nota da eliminare
+
 // Funzione per salvare una nuova nota
 async function saveNote() {
   const note = document.getElementById("note-input").value;
@@ -65,7 +67,7 @@ function createNoteCard(noteId, note, timestamp) {
   const deleteButton = document.createElement("button");
   deleteButton.textContent = "Elimina";
   deleteButton.classList.add("delete-button");
-  deleteButton.onclick = () => confirmDelete(noteId);
+  deleteButton.onclick = () => showDeleteModal(noteId);
 
   card.appendChild(noteText);
   card.appendChild(noteDate);
@@ -74,21 +76,39 @@ function createNoteCard(noteId, note, timestamp) {
   return card;
 }
 
-// Funzione per eliminare una nota con conferma
-async function confirmDelete(noteId) {
-  const confirmed = confirm("Sei sicuro di voler eliminare questa nota?");
-  if (!confirmed) return;
+// Funzione per mostrare il modale di eliminazione
+function showDeleteModal(noteId) {
+  noteIdToDelete = noteId; // Salva l'ID della nota
+  const modal = document.getElementById("delete-modal");
+  modal.style.display = "flex"; // Mostra il modale
+}
+
+// Funzione per nascondere il modale
+function hideDeleteModal() {
+  const modal = document.getElementById("delete-modal");
+  modal.style.display = "none"; // Nascondi il modale
+  noteIdToDelete = null; // Resetta l'ID della nota
+}
+
+// Funzione per eliminare la nota
+async function confirmDelete() {
+  if (!noteIdToDelete) return;
 
   try {
-    const docRef = doc(collection(db, "user_data", "notes", "all_notes"), noteId);
+    const docRef = doc(collection(db, "user_data", "notes", "all_notes"), noteIdToDelete);
     await deleteDoc(docRef);
     console.log("Nota eliminata con successo!");
     alert("Nota eliminata!");
+    hideDeleteModal(); // Nascondi il modale
     loadNotes(); // Aggiorna l'elenco delle note
   } catch (error) {
     console.error("Errore nell'eliminazione della nota:", error);
   }
 }
+
+// Aggiungi eventi ai pulsanti del modale
+document.getElementById("confirm-delete").addEventListener("click", confirmDelete);
+document.getElementById("cancel-delete").addEventListener("click", hideDeleteModal);
 
 // Carica le note quando la pagina è pronta
 document.addEventListener("DOMContentLoaded", loadNotes);
