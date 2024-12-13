@@ -1,4 +1,5 @@
-// Importa il database da firebase.js
+// Importa i moduli Firestore necessari
+import { collection, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 import { db } from './firebase.js'; // Assicurati che il percorso sia corretto
 
 // Variabile globale per la password
@@ -67,11 +68,11 @@ document.addEventListener('DOMContentLoaded', arrangeIcons);
 
 // Funzione per caricare i dati da Firestore
 async function loadDataFromFirestore() {
-  const docRef = db.collection("user_data").doc("notes");
+  const docRef = doc(collection(db, "user_data"), "notes"); // Corretto per il nuovo SDK Firestore
 
   try {
     console.log("Caricamento dati da Firestore...");
-    const docSnap = await docRef.get();
+    const docSnap = await getDoc(docRef);
     if (docSnap.exists()) {
       const data = docSnap.data();
       console.log("Dati caricati:", data);
@@ -86,10 +87,10 @@ async function loadDataFromFirestore() {
 
 // Funzione per salvare i dati su Firestore
 async function saveDataToFirestore(data) {
-  const docRef = db.collection("user_data").doc("notes");
+  const docRef = doc(collection(db, "user_data"), "notes"); // Corretto per il nuovo SDK Firestore
 
   try {
-    await docRef.set(data);
+    await setDoc(docRef, data);
     console.log("Dati salvati con successo!");
   } catch (error) {
     console.error("Errore nel salvataggio dei dati:", error);
@@ -107,6 +108,9 @@ function saveNote() {
 
   saveDataToFirestore(data);
 }
+
+// Rendi `saveNote` globale
+window.saveNote = saveNote;
 
 // Funzione per aggiornare l'interfaccia utente
 function populateUI(data) {
