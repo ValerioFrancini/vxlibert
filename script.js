@@ -4,6 +4,7 @@ import { db } from './firebase.js';
 document.addEventListener('DOMContentLoaded', () => {
   // Funzione per navigare tra le app
   function navigateTo(app) {
+    console.log(`Navigazione verso ${app}`);
     switch (app) {
       case 'calendar':
         window.location.href = 'calendar.html';
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
         break;
       default:
         console.error(`Navigazione non valida: ${app}`);
+        window.location.href = `${app}.html`;
     }
   }
   
