@@ -3,7 +3,7 @@ import { db } from './firebase.js';
 import { doc, getDoc, setDoc } from "firebase/firestore"; // Moduli per leggere/scrivere
 
 // Variabile globale per la password
-const PASSWORD = "miasuperpassword";
+const PASSWORD = "try1";
 
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
