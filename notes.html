@@ -16,7 +16,7 @@
       <div class="notes-section">
         <h2>Scrivi una nuova nota</h2>
         <textarea id="note-input" placeholder="Scrivi una nota..."></textarea>
-        <button onclick="saveNote()">Salva Nota</button>
+        <button id="save-note">Salva Nota</button>
       </div>
 
       <!-- Archivio delle note -->
@@ -25,14 +25,15 @@
         <div id="notes-container" class="notes-container">
           <!-- Le note verranno aggiunte dinamicamente qui -->
         </div>
+      </div>
 
-        <!-- Modale di conferma eliminazione -->
-<div id="delete-modal" class="modal">
-  <div class="modal-content">
-    <p>Sei sicuro di voler eliminare questa nota?</p>
-    <button id="confirm-delete" class="modal-button confirm">Sì</button>
-    <button id="cancel-delete" class="modal-button cancel">No</button>
-  </div>
+      <!-- Modale di conferma eliminazione -->
+      <div id="delete-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+          <p>Sei sicuro di voler eliminare questa nota?</p>
+          <button id="confirm-delete" class="modal-button confirm">Sì</button>
+          <button id="cancel-delete" class="modal-button cancel">No</button>
+        </div>
       </div>
     </main>
     <footer class="footer">

@@ -8,30 +8,30 @@
 </head>
 <body>
   <!-- Schermata di accesso -->
-  <div id="login-screen" class="login-screen">
-    <div class="login-box">
+  <div id="login-screen">
+    <div class="form-container">
       <h2>Accedi</h2>
-      <form id="login-form" onsubmit="return false;">
-        <input type="email" id="login-email" placeholder="Inserisci la tua email" required>
-        <input type="password" id="login-password" placeholder="Inserisci la password" required>
-        <button id="login-button" type="submit">Accedi</button>
-      </form>
+      <input type="email" id="login-email" placeholder="Inserisci la tua email">
+      <input type="password" id="login-password" placeholder="Inserisci la password">
+      <button id="login-button">Login</button>
       <p>Non hai un account? <a href="#" id="show-register-form">Registrati</a></p>
       <p id="login-error-message" class="error-message"></p>
     </div>
+  </div>
+  
 
-    <!-- Schermata di registrazione -->
-    <div class="register-box" style="display: none;">
+  <!-- Schermata di registrazione -->
+  <div id="register-screen" style="display: none;">
+    <div class="form-container">
       <h2>Registrati</h2>
-      <form id="register-form" onsubmit="return false;">
-        <input type="email" id="register-email" placeholder="Inserisci la tua email" required>
-        <input type="password" id="register-password" placeholder="Inserisci la password" required>
-        <button id="register-button" type="submit">Registrati</button>
-      </form>
+      <input type="email" id="register-email" placeholder="Inserisci la tua email">
+      <input type="password" id="register-password" placeholder="Inserisci la password">
+      <button id="register-button">Registrati</button>
       <p>Hai già un account? <a href="#" id="show-login-form">Accedi</a></p>
       <p id="register-error-message" class="error-message"></p>
     </div>
   </div>
+  
 
   <!-- Contenuto principale -->
   <div class="container" id="main-content" style="display: none;">
@@ -78,90 +78,36 @@
     </footer>
   </div>
 
-  <!-- Firebase Configuration -->
-  <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
-    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
-    import { getAuth } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-    import {
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      signOut,
-      onAuthStateChanged
-    } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
-
-    const firebaseConfig = {
-      apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
-      authDomain: "vxlibert.firebaseapp.com",
-      projectId: "vxlibert",
-      storageBucket: "vxlibert.firebasestorage.app",
-      messagingSenderId: "491816836303",
-      appId: "1:491816836303:web:af4398c3eee150b1672bba",
-      measurementId: "G-SXY4N1JFPW"
-    };
-
-    // Inizializza Firebase
-    const app = initializeApp(firebaseConfig);
-    const db = getFirestore(app);
-    const auth = getAuth(app);
-
-    // Login
-    document.getElementById("login-button").addEventListener("click", async () => {
-      const email = document.getElementById("login-email").value;
-      const password = document.getElementById("login-password").value;
-      const errorMessage = document.getElementById("login-error-message");
-
-      try {
-        await signInWithEmailAndPassword(auth, email, password);
-        document.getElementById("login-screen").style.display = "none";
-        document.getElementById("main-content").style.display = "block";
-        errorMessage.textContent = "";
-      } catch (error) {
-        errorMessage.textContent = `Errore: ${error.message}`;
-      }
-    });
-
-    // Registrazione
-    document.getElementById("register-button").addEventListener("click", async () => {
-      const email = document.getElementById("register-email").value;
-      const password = document.getElementById("register-password").value;
-      const errorMessage = document.getElementById("register-error-message");
-
-      try {
-        await createUserWithEmailAndPassword(auth, email, password);
-        alert("Registrazione completata! Ora puoi accedere.");
-        document.querySelector(".register-box").style.display = "none";
-        document.querySelector(".login-box").style.display = "block";
-        errorMessage.textContent = "";
-      } catch (error) {
-        errorMessage.textContent = `Errore: ${error.message}`;
-      }
-    });
-
-    // Logout
-    document.getElementById("logout-button").addEventListener("click", async () => {
-      try {
-        await signOut(auth);
-        document.getElementById("main-content").style.display = "none";
-        document.getElementById("login-screen").style.display = "block";
-      } catch (error) {
-        console.error("Errore durante il logout:", error.message);
-      }
-    });
-
-    // Monitoraggio dello stato di autenticazione
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        document.getElementById("main-content").style.display = "block";
-        document.getElementById("login-screen").style.display = "none";
-      } else {
-        document.getElementById("login-screen").style.display = "block";
-        document.getElementById("main-content").style.display = "none";
-      }
-    });
-  </script>
+  <!-- Script Firebase -->
+  <script type="module" src="firebase.js"></script>
 
   <!-- Script per il comportamento delle app -->
   <script type="module" src="script.js"></script>
+
+  <!-- Eventi per il passaggio tra schermate -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginScreen = document.getElementById('login-screen');
+      const registerScreen = document.getElementById('register-screen');
+      const showRegisterForm = document.getElementById('show-register-form');
+      const showLoginForm = document.getElementById('show-login-form');
+
+      if (showRegisterForm) {
+        showRegisterForm.addEventListener('click', (e) => {
+          e.preventDefault();
+          loginScreen.style.display = 'none';
+          registerScreen.style.display = 'block';
+        });
+      }
+
+      if (showLoginForm) {
+        showLoginForm.addEventListener('click', (e) => {
+          e.preventDefault();
+          registerScreen.style.display = 'none';
+          loginScreen.style.display = 'block';
+        });
+      }
+    });
+  </script>
 </body>
 </html>

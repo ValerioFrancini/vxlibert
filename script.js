@@ -22,58 +22,103 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
   
+  // Rende la funzione di navigazione globale
   window.navigateTo = navigateTo;
 
-  // Organizza le icone
+  // Organizza le icone in cerchio
   function arrangeIcons() {
     const icons = document.querySelectorAll('.app-icon');
-    const radius = 100;
-    const angleStep = (2 * Math.PI) / icons.length;
+    if (icons.length === 0) {
+      console.warn("Nessuna icona trovata per l'organizzazione.");
+      return;
+    }
+
+    const radius = 100; // Raggio del cerchio
+    const angleStep = (2 * Math.PI) / icons.length; // Passo angolare
 
     icons.forEach((icon, index) => {
       const angle = index * angleStep;
       const x = radius * Math.cos(angle);
       const y = radius * Math.sin(angle);
+
+      // Imposta la posizione
       icon.style.left = `calc(50% + ${x}px)`;
       icon.style.top = `calc(50% + ${y}px)`;
       icon.style.transform = `translate(-50%, -50%)`;
     });
   }
+
   arrangeIcons();
 
   // Gestione del menu profilo
-  const profileButton = document.getElementById("profile-button");
-  const profileMenu = document.getElementById("profile-menu");
+  const profileButton = document.getElementById('profile-button');
+  const profileMenu = document.getElementById('profile-menu');
 
+  // Controlla che entrambi gli elementi esistano
   if (profileButton && profileMenu) {
-    profileButton.addEventListener("click", (event) => {
-      event.stopPropagation();
-      profileMenu.style.display = profileMenu.style.display === "none" ? "block" : "none";
+    // Aggiungi un evento al clic sul pulsante del profilo
+    profileButton.addEventListener('click', (event) => {
+      event.stopPropagation(); // Previeni la propagazione del clic
+      const isMenuVisible = profileMenu.style.display === 'block';
+      profileMenu.style.display = isMenuVisible ? 'none' : 'block'; // Mostra o nascondi il menu
     });
 
-    document.addEventListener("click", (event) => {
-      if (!profileButton.contains(event.target) && !profileMenu.contains(event.target)) {
-        profileMenu.style.display = "none";
-      }
+    // Nascondi il menu cliccando fuori
+    document.addEventListener('click', () => {
+      profileMenu.style.display = 'none';
+    });
+
+    // Impedisci che il clic sul menu lo chiuda
+    profileMenu.addEventListener('click', (event) => {
+      event.stopPropagation();
     });
   } else {
-    console.warn("Profilo o menu profilo non trovato!");
+    console.error('Pulsante del profilo o menu non trovato!');
   }
+});
 
   // Aggiungi listener per i pulsanti delle app
   const appIcons = document.querySelectorAll('.app-icon');
-  appIcons.forEach((icon) => {
-    icon.addEventListener('click', () => {
-      const app = icon.id.split('-')[0]; // Estrae il nome dell'app dall'ID
-      navigateTo(app);
+  if (appIcons.length === 0) {
+    console.warn("Nessuna icona trovata per l'aggiunta di listener.");
+  } else {
+    appIcons.forEach((icon) => {
+      icon.addEventListener('click', () => {
+        const app = icon.id.split('-')[0]; // Estrae il nome dell'app dall'ID
+        navigateTo(app);
+      });
     });
-  });
+  }
 
-  // Verifica Firebase
+  // Verifica configurazione Firebase
   if (!db) {
-    console.error("Firebase non è stato inizializzato correttamente.");
+    console.error("Firebase non è stato inizializzato correttamente. Controlla la configurazione del file firebase.js.");
     return;
   }
 
   console.log("Script caricato correttamente.");
-});
+
+// Funzione per creare una card per una nota
+function createNoteCard(noteId, note, timestamp) {
+    const card = document.createElement("div");
+    card.classList.add("note-card");
+  
+    const noteText = document.createElement("p");
+    noteText.textContent = note;
+  
+    const noteDate = document.createElement("span");
+    noteDate.textContent = `Salvata il ${new Date(timestamp).toLocaleString()}`;
+    noteDate.classList.add("note-date");
+  
+    const deleteButton = document.createElement("button");
+    deleteButton.textContent = "Elimina";
+    deleteButton.classList.add("delete-button");
+    deleteButton.addEventListener("click", () => showDeleteModal(noteId));
+  
+    card.appendChild(noteText);
+    card.appendChild(noteDate);
+    card.appendChild(deleteButton);
+  
+    return card;
+  }
+  
