@@ -12,8 +12,8 @@
     <div class="login-box">
       <h2>Accedi</h2>
       <input type="password" id="password" placeholder="Inserisci la password">
-<button onclick="checkPassword()">Entra</button>
-<p id="error-message" class="error-message"></p>
+      <button onclick="checkPassword()">Entra</button>
+      <p id="error-message" class="error-message"></p>
     </div>
   </div>
 
@@ -64,10 +64,32 @@
     </footer>
   </div>
 
-  <!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.17.1/firebase-firestore.js"></script>
-<script src="script.js"></script>
+  <!-- Firebase Configuration -->
+  <script type="module">
+    // Import the functions you need from the SDKs you need
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+    import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
 
+    // Your web app's Firebase configuration
+    const firebaseConfig = {
+      apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
+      authDomain: "vxlibert.firebaseapp.com",
+      projectId: "vxlibert",
+      storageBucket: "vxlibert.firebasestorage.app",
+      messagingSenderId: "491816836303",
+      appId: "1:491816836303:web:af4398c3eee150b1672bba",
+      measurementId: "G-SXY4N1JFPW"
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Esportiamo il database per il file script.js
+    window.db = db; // Rende il db accessibile globalmente
+  </script>
+
+  <!-- Script principale -->
+  <script src="script.js"></script>
 </body>
 </html>

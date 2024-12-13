@@ -1,3 +1,27 @@
+// Variabile globale per la password
+const PASSWORD = "try1";
+
+// Funzione per controllare la password
+function checkPassword() {
+  const enteredPassword = document.getElementById("password").value;
+  const errorMessage = document.getElementById("error-message");
+
+  console.log("Password inserita:", enteredPassword);
+
+  if (enteredPassword === PASSWORD) {
+    console.log("Password corretta!");
+    document.getElementById("login-screen").style.display = "none";
+    document.getElementById("main-content").style.display = "block";
+
+    // Carica i dati dal database
+    loadDataFromFirestore();
+  } else {
+    console.log("Password errata!");
+    errorMessage.textContent = "Password errata. Riprova.";
+  }
+}
+
+
 // Inizializza Firebase usando CDN
 const firebaseConfig = {
     apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
@@ -8,13 +32,9 @@ const firebaseConfig = {
     appId: "1:491816836303:web:af4398c3eee150b1672bba"
   };
   
-  const app = firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore();
-  
-
-
-// Variabile globale per la password
-const PASSWORD = "try1";
+  // Inizializza Firebase
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore(); // Ottieni riferimento al Firestore
 
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
@@ -54,35 +74,14 @@ function arrangeIcons() {
 
 document.addEventListener('DOMContentLoaded', arrangeIcons);
 
-// Funzione per controllare la password
-function checkPassword() {
-    const enteredPassword = document.getElementById("password").value;
-    const errorMessage = document.getElementById("error-message");
-  
-    console.log("Password inserita:", enteredPassword); // Log di debug
-  
-    if (enteredPassword === PASSWORD) {
-      console.log("Password corretta!");
-      document.getElementById("login-screen").style.display = "none";
-      document.getElementById("main-content").style.display = "block";
-  
-      // Carica i dati dal database
-      loadDataFromFirestore();
-    } else {
-      console.log("Password errata!");
-      errorMessage.textContent = "Password errata. Riprova.";
-    }
-  }
-  
-
 // Funzione per caricare i dati da Firestore
 async function loadDataFromFirestore() {
-    const docRef = doc(db, "user_data", "notes");
+    const docRef = db.collection("user_data").doc("notes");
   
     try {
       console.log("Caricamento dati da Firestore...");
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
+      const docSnap = await docRef.get();
+      if (docSnap.exists) {
         const data = docSnap.data();
         console.log("Dati caricati:", data);
         populateUI(data);
@@ -94,19 +93,18 @@ async function loadDataFromFirestore() {
     }
   }
   
-
-// Funzione per salvare i dati su Firestore
-async function saveDataToFirestore(data) {
-  const docRef = doc(db, "user_data", "notes");
-
-  try {
-    await setDoc(docRef, data);
-    console.log("Dati salvati con successo!");
-  } catch (error) {
-    console.error("Errore nel salvataggio dei dati:", error);
+  // Funzione per salvare i dati su Firestore
+  async function saveDataToFirestore(data) {
+    const docRef = db.collection("user_data").doc("notes");
+  
+    try {
+      await docRef.set(data);
+      console.log("Dati salvati con successo!");
+    } catch (error) {
+      console.error("Errore nel salvataggio dei dati:", error);
+    }
   }
-}
-
+  
 // Funzione per salvare una nuova nota
 function saveNote() {
   const note = document.getElementById("note-input").value;
