@@ -1,6 +1,17 @@
-// Importa Firestore dal file firebase.js
-import { db } from './firebase.js';
-import { doc, getDoc, setDoc } from "firebase/firestore"; // Moduli per leggere/scrivere
+// Inizializza Firebase usando CDN
+const firebaseConfig = {
+    apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
+    authDomain: "vxlibert.firebaseapp.com",
+    projectId: "vxlibert",
+    storageBucket: "vxlibert.firebasestorage.app",
+    messagingSenderId: "491816836303",
+    appId: "1:491816836303:web:af4398c3eee150b1672bba"
+  };
+  
+  const app = firebase.initializeApp(firebaseConfig);
+  const db = firebase.firestore();
+  
+
 
 // Variabile globale per la password
 const PASSWORD = "try1";
