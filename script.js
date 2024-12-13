@@ -21,20 +21,19 @@ function checkPassword() {
   }
 }
 
-
 // Inizializza Firebase usando CDN
 const firebaseConfig = {
-    apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
-    authDomain: "vxlibert.firebaseapp.com",
-    projectId: "vxlibert",
-    storageBucket: "vxlibert.firebasestorage.app",
-    messagingSenderId: "491816836303",
-    appId: "1:491816836303:web:af4398c3eee150b1672bba"
-  };
-  
-  // Inizializza Firebase
-  firebase.initializeApp(firebaseConfig);
-  const db = window.db; // Usa il database reso globale
+  apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
+  authDomain: "vxlibert.firebaseapp.com",
+  projectId: "vxlibert",
+  storageBucket: "vxlibert.firebasestorage.app",
+  messagingSenderId: "491816836303",
+  appId: "1:491816836303:web:af4398c3eee150b1672bba"
+};
+
+// Inizializza Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore(); // Inizializza il database Firestore
 
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
@@ -76,35 +75,35 @@ document.addEventListener('DOMContentLoaded', arrangeIcons);
 
 // Funzione per caricare i dati da Firestore
 async function loadDataFromFirestore() {
-    const docRef = db.collection("user_data").doc("notes");
-  
-    try {
-      console.log("Caricamento dati da Firestore...");
-      const docSnap = await docRef.get();
-      if (docSnap.exists) {
-        const data = docSnap.data();
-        console.log("Dati caricati:", data);
-        populateUI(data);
-      } else {
-        console.log("Nessun dato trovato!");
-      }
-    } catch (error) {
-      console.error("Errore nel caricamento dei dati da Firestore:", error);
+  const docRef = db.collection("user_data").doc("notes");
+
+  try {
+    console.log("Caricamento dati da Firestore...");
+    const docSnap = await docRef.get();
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      console.log("Dati caricati:", data);
+      populateUI(data);
+    } else {
+      console.log("Nessun dato trovato!");
     }
+  } catch (error) {
+    console.error("Errore nel caricamento dei dati da Firestore:", error);
   }
-  
-  // Funzione per salvare i dati su Firestore
-  async function saveDataToFirestore(data) {
-    const docRef = db.collection("user_data").doc("notes");
-  
-    try {
-      await docRef.set(data);
-      console.log("Dati salvati con successo!");
-    } catch (error) {
-      console.error("Errore nel salvataggio dei dati:", error);
-    }
+}
+
+// Funzione per salvare i dati su Firestore
+async function saveDataToFirestore(data) {
+  const docRef = db.collection("user_data").doc("notes");
+
+  try {
+    await docRef.set(data);
+    console.log("Dati salvati con successo!");
+  } catch (error) {
+    console.error("Errore nel salvataggio dei dati:", error);
   }
-  
+}
+
 // Funzione per salvare una nuova nota
 function saveNote() {
   const note = document.getElementById("note-input").value;
