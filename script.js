@@ -34,7 +34,7 @@ const firebaseConfig = {
   
   // Inizializza Firebase
   firebase.initializeApp(firebaseConfig);
-  const db = firebase.firestore(); // Ottieni riferimento al Firestore
+  const db = window.db; // Usa il database reso globale
 
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
