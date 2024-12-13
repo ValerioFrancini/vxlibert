@@ -28,15 +28,16 @@ body, html {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  padding: 20px;
+  padding: 17px;
   box-sizing: border-box;
 }
 
 .header {
   text-align: center;
-  padding: 20px 0;
-  font-size: 24px;
+  padding: 10px 0;
+  font-size: 12px;
   background: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
   width: 100%;
   position: relative; /* Per posizionare il profilo nel contesto */
 }
@@ -44,8 +45,8 @@ body, html {
 /* Pulsante del profilo */
 .profile-container {
   position: absolute;
-  top: 10px; /* Spaziatura dall'alto */
-  right: 10px; /* Spaziatura dal lato destro */
+  top: 20px; /* Spaziatura dall'alto */
+  right: 20px; /* Spaziatura dal lato destro */
   z-index: 1000; /* Assicurati che sia sopra agli altri elementi */
 }
 
@@ -248,6 +249,7 @@ body, html {
   padding: 10px 0;
   background: rgba(0, 0, 0, 0.6);
   width: 100%;
+  margin-top: 40%;
 }
 
 
@@ -277,7 +279,7 @@ body, html {
 /* Input di testo */
 .form-container input[type="email"],
 .form-container input[type="password"] {
-  width: 100%;
+  width: 92%;
   padding: 12px;
   border: none;
   border-radius: 6px;
