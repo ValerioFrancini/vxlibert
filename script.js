@@ -45,36 +45,44 @@ document.addEventListener('DOMContentLoaded', arrangeIcons);
 
 // Funzione per controllare la password
 function checkPassword() {
-  const enteredPassword = document.getElementById("password").value;
-  const errorMessage = document.getElementById("error-message");
-
-  if (enteredPassword === PASSWORD) {
-    document.getElementById("login-screen").style.display = "none";
-    document.getElementById("main-content").style.display = "block";
-
-    // Carica i dati dal database
-    loadDataFromFirestore();
-  } else {
-    errorMessage.textContent = "Password errata. Riprova.";
+    const enteredPassword = document.getElementById("password").value;
+    const errorMessage = document.getElementById("error-message");
+  
+    console.log("Password inserita:", enteredPassword); // Log di debug
+  
+    if (enteredPassword === PASSWORD) {
+      console.log("Password corretta!");
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("main-content").style.display = "block";
+  
+      // Carica i dati dal database
+      loadDataFromFirestore();
+    } else {
+      console.log("Password errata!");
+      errorMessage.textContent = "Password errata. Riprova.";
+    }
   }
-}
+  
 
 // Funzione per caricare i dati da Firestore
 async function loadDataFromFirestore() {
-  const docRef = doc(db, "user_data", "notes");
-
-  try {
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      const data = docSnap.data();
-      populateUI(data);
-    } else {
-      console.log("Nessun dato trovato!");
+    const docRef = doc(db, "user_data", "notes");
+  
+    try {
+      console.log("Caricamento dati da Firestore...");
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        console.log("Dati caricati:", data);
+        populateUI(data);
+      } else {
+        console.log("Nessun dato trovato!");
+      }
+    } catch (error) {
+      console.error("Errore nel caricamento dei dati da Firestore:", error);
     }
-  } catch (error) {
-    console.error("Errore nel caricamento dei dati:", error);
   }
-}
+  
 
 // Funzione per salvare i dati su Firestore
 async function saveDataToFirestore(data) {
