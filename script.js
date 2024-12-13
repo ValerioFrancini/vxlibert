@@ -1,3 +1,6 @@
+// Importa il database da firebase.js
+import { db } from './firebase.js'; // Assicurati che il percorso sia corretto
+
 // Variabile globale per la password
 const PASSWORD = "try1";
 
@@ -20,20 +23,6 @@ function checkPassword() {
     errorMessage.textContent = "Password errata. Riprova.";
   }
 }
-
-// Inizializza Firebase usando CDN
-const firebaseConfig = {
-  apiKey: "AIzaSyCrOKUMKdM1PIHWtF9_sbjFYOhrVOYJAjo",
-  authDomain: "vxlibert.firebaseapp.com",
-  projectId: "vxlibert",
-  storageBucket: "vxlibert.firebasestorage.app",
-  messagingSenderId: "491816836303",
-  appId: "1:491816836303:web:af4398c3eee150b1672bba"
-};
-
-// Inizializza Firebase
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore(); // Inizializza il database Firestore
 
 // Funzione per gestire il navigatore delle applicazioni
 function navigateTo(app) {
@@ -80,7 +69,7 @@ async function loadDataFromFirestore() {
   try {
     console.log("Caricamento dati da Firestore...");
     const docSnap = await docRef.get();
-    if (docSnap.exists) {
+    if (docSnap.exists()) {
       const data = docSnap.data();
       console.log("Dati caricati:", data);
       populateUI(data);

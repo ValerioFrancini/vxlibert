@@ -1,7 +1,7 @@
 // Importa le funzioni necessarie da Firebase SDK
-import { initializeApp } from "firebase/app";
-import { getFirestore } from "firebase/firestore"; // Per usare Firestore
-import { getAnalytics } from "firebase/analytics"; // (Facoltativo)
+import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+import { getFirestore } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js"; // Per usare Firestore
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-analytics.js"; // (Facoltativo)
 
 // Configurazione Firebase
 const firebaseConfig = {
