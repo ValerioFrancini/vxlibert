@@ -11,9 +11,11 @@
   <div id="login-screen" class="login-screen">
     <div class="login-box">
       <h2>Accedi</h2>
-      <input type="email" id="login-email" placeholder="Inserisci la tua email">
-      <input type="password" id="login-password" placeholder="Inserisci la password">
-      <button id="login-button">Accedi</button>
+      <form id="login-form" onsubmit="return false;"> <!-- Form di login -->
+        <input type="email" id="login-email" placeholder="Inserisci la tua email" required>
+        <input type="password" id="login-password" placeholder="Inserisci la password" required>
+        <button id="login-button" type="submit">Accedi</button>
+      </form>
       <p>Non hai un account? <a href="#" id="show-register-form">Registrati</a></p>
       <p id="login-error-message" class="error-message"></p>
     </div>
@@ -21,9 +23,11 @@
     <!-- Schermata di registrazione -->
     <div class="register-box" style="display: none;">
       <h2>Registrati</h2>
-      <input type="email" id="register-email" placeholder="Inserisci la tua email">
-      <input type="password" id="register-password" placeholder="Inserisci la password">
-      <button id="register-button">Registrati</button>
+      <form id="register-form" onsubmit="return false;"> <!-- Form di registrazione -->
+        <input type="email" id="register-email" placeholder="Inserisci la tua email" required>
+        <input type="password" id="register-password" placeholder="Inserisci la password" required>
+        <button id="register-button" type="submit">Registrati</button>
+      </form>
       <p>Hai già un account? <a href="#" id="show-login-form">Accedi</a></p>
       <p id="register-error-message" class="error-message"></p>
     </div>
@@ -102,15 +106,36 @@
     const db = getFirestore(app);
     const auth = getAuth(app);
 
-    // Gestione del menu profilo
-    const profileButton = document.getElementById("profile-button");
-    const profileMenu = document.getElementById("profile-menu");
+    // Login
+    document.getElementById("login-button").addEventListener("click", async () => {
+      const email = document.getElementById("login-email").value;
+      const password = document.getElementById("login-password").value;
+      const errorMessage = document.getElementById("login-error-message");
 
-    profileButton.addEventListener("click", () => {
-      if (profileMenu.style.display === "none") {
-        profileMenu.style.display = "block";
-      } else {
-        profileMenu.style.display = "none";
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        document.getElementById("login-screen").style.display = "none";
+        document.getElementById("main-content").style.display = "block";
+        errorMessage.textContent = "";
+      } catch (error) {
+        errorMessage.textContent = `Errore: ${error.message}`;
+      }
+    });
+
+    // Registrazione
+    document.getElementById("register-button").addEventListener("click", async () => {
+      const email = document.getElementById("register-email").value;
+      const password = document.getElementById("register-password").value;
+      const errorMessage = document.getElementById("register-error-message");
+
+      try {
+        await createUserWithEmailAndPassword(auth, email, password);
+        alert("Registrazione completata! Ora puoi accedere.");
+        document.querySelector(".register-box").style.display = "none";
+        document.querySelector(".login-box").style.display = "block";
+        errorMessage.textContent = "";
+      } catch (error) {
+        errorMessage.textContent = `Errore: ${error.message}`;
       }
     });
 
