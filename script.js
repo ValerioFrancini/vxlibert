@@ -23,9 +23,19 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = `${app}.html`;
     }
   }
-  
-  // Rende la funzione di navigazione globale
-  window.navigator = navigateTo;
+
+  // Rendi globale la funzione navigateTo
+  window.navigateTo = navigateTo;
+
+  // Aggiungi gli event listener alle icone
+  const appIcons = document.querySelectorAll('.app-icon');
+  appIcons.forEach(icon => {
+    icon.addEventListener('click', () => {
+      const app = icon.getAttribute('data-app');
+      navigateTo(app);
+    });
+  });
+
 
   // Organizza le icone in cerchio
   function arrangeIcons() {
